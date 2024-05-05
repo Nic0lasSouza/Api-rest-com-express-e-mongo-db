@@ -1,36 +1,25 @@
 import express from "express";
+import conectDatabase from "./config/dbconect.js";
+import livro from "./models/Livro.js";
+
+const conexao = await conectDatabase();
+conexao.on("error", (erro)=> {
+    console.error("Erro de conexão", erro)
+});
+
+conexao.once("open", ()=>{
+    console.log("Conexão do banco feita com sucesso")
+})
 const app = express();
-
 app.use(express.json());
-const livros = [
-    {
-        id: 1,
-        titulo: 'O Senhor dos Anéis',
-        autor: 'J.R.R. Tolkien'
-    },
-    {
-        id: 2,
-        titulo: 'Fundação',
-        autor: 'Isaac Asimov'
-    },
-    {
-        id: 3,
-        titulo: 'Duna',
-        autor: 'Frank Herbert'
-    }
-]
 
-function buscaLivro(id){
-    return livros.findIndex(livro =>{
-        return livro.id === Number(id);
-    })
-}
 app.get("/", (req, res) => {
     res.status(200).send("Curso de Node.Js");
 });
 
-app.get("/livros", (req, res)=> {
-    res.status(200).json(livros);
+app.get("/livros", async(req, res)=> {
+    const listaLivros = await livro.find({});
+    res.status(200).json(listaLivros);
 })
 
 app.get("/livros/:id", (req, res) => {
@@ -59,4 +48,3 @@ app.delete("/livros/:id", (req, res)=>{
 export default app;
 
 // mongodb+srv://admin:admin123@cluster0.z1anr6u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-// mongodb+srv://admin:<password>@cluster0.z1anr6u.mongodb.net/
