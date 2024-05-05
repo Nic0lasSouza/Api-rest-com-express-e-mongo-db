@@ -1,6 +1,6 @@
 import express from "express";
 import conectDatabase from "./config/dbconect.js";
-import livro from "./models/Livro.js";
+import routes from "./routes/index.js";
 
 const conexao = await conectDatabase();
 conexao.on("error", (erro)=> {
@@ -11,11 +11,7 @@ conexao.once("open", ()=>{
     console.log("Conexão do banco feita com sucesso")
 })
 const app = express();
-app.use(express.json());
-
-app.get("/", (req, res) => {
-    res.status(200).send("Curso de Node.Js");
-});
+routes(app)
 
 app.get("/livros/:id", (req, res) => {
     const index = buscaLivro(req.params.id);
@@ -41,5 +37,3 @@ app.delete("/livros/:id", (req, res)=>{
 })
 
 export default app;
-
-// mongodb+srv://admin:admin123@cluster0.z1anr6u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
