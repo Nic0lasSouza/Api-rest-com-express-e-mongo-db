@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, {mongo} from "mongoose";
 
 async function conectDatabase(){
-    mongoose.connect();
+    mongoose.connect(process.env.DB_CONECTION_STRING);
     return mongoose.connection;
 };
 
