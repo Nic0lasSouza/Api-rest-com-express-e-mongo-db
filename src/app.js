@@ -4,8 +4,8 @@ import routes from "./routes/index.js";
 
 const conexao = await conectDatabase();
 conexao.on("error", (erro)=> {
-    console.error("Erro de conexão", erro)
-});
+    console.log("Erro de conexão", erro)
+}, );
 
 conexao.once("open", ()=>{
     console.log("Conexão do banco feita com sucesso")
